@@ -12,4 +12,4 @@ const onPlay = function (data) {
 
 player.on('timeupdate', throttle(onPlay, 1000));
 
-player.setCurrentTime(local.load(STORAGE_KEY));
+player.setCurrentTime(local.load(STORAGE_KEY) || 0);
