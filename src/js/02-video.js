@@ -1,15 +1,15 @@
-const iframe = document.querySelector('iframe');
+import local from './local-storage';
+import throttle from 'lodash.throttle';
+import Player from '@vimeo/player';
 
-const options = {
-  id: 'vimeo-player',
-  width: 'width',
+const iframe = document.querySelector('iframe');
+const player = new Player(iframe);
+const STORAGE_KEY = 'videoplayer-current-time';
+
+const onPlay = function (data) {
+  const currentTime = local.save(STORAGE_KEY, data.seconds);
 };
 
-const player = new Vimeo.Player('vimeo-player', options);
+player.on('timeupdate', throttle(onPlay, 1000));
 
-player.setVolume(0);
-
-player.on('play', function () {
-  console.log('Played the first video');
-  setCurrentTime(seconds);
-});
+player.setCurrentTime(local.load(STORAGE_KEY));
